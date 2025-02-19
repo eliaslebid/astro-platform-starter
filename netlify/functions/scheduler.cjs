@@ -1,43 +1,29 @@
 const fetch = require('node-fetch');
 
-const apiToken = '7c16f3ae8735cb869c692acf2f7abba978c1d79';
+const REDMINE_API_KEY = process.env.REDMINE_API_KEY;
+const REDMINE_URL = process.env.REDMINE_URL; // e.g., https://your-redmine-instance.com
 
-exports.handler = async () => {
-    const apiUrl = 'https://redmine.integrity.com.ua/time_entries.json';
-    const issueId = 32760;
-    const hours = 8;
-
-    const payload = {
-        time_entry: {
-            issue_id: issueId,
-            hours: hours,
-            comments: 'Automated daily log',
-            activity_id: 9 // Replace with the correct activity ID from your Redmine instance
-        }
-    };
-
+async function logTime(timeData) {
     try {
-        const response = await fetch(apiUrl, {
+        const response = await fetch(`${REDMINE_URL}/time_entries.json`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Redmine-API-Key': apiToken
+                'X-Redmine-API-Key': REDMINE_API_KEY
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ time_entry: timeData })
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to log time: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Failed to log time: ${response.status} - ${errorText}`);
         }
 
-        return {
-            statusCode: 200,
-            body: 'Time logged successfully!'
-        };
+        return await response.json();
     } catch (error) {
-        return {
-            statusCode: 500,
-            body: `Error: ${error.message}`
-        };
+        console.error(error);
+        throw error;
     }
-};
+}
+
+module.exports = { logTime };

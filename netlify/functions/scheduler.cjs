@@ -26,4 +26,31 @@ async function logTime(timeData) {
     }
 }
 
-module.exports = { logTime };
+// Export the handler that Netlify expects
+module.exports.handler = async (event, context) => {
+    console.log('Received event:', event);
+
+    // Extract timeData from the request body (assumes JSON payload)
+    let timeData;
+    try {
+        timeData = JSON.parse(event.body);
+    } catch (err) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: 'Invalid JSON in request body' })
+        };
+    }
+
+    try {
+        const result = await logTime(timeData);
+        return {
+            statusCode: 200,
+            body: JSON.stringify(result)
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message })
+        };
+    }
+};

@@ -22,6 +22,7 @@
     "blobshape": "^1.0.0",
     "marked": "^13.0.0",
     "marked-shiki": "^1.1.0",
+    "moment-timezone": "^0.5.47",
     "node-fetch": "^2.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

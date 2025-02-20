@@ -87,7 +87,7 @@ async function scheduleTimeLog() {
     if (remainingHours > 0) {
         console.log(`Logging ${remainingHours} hour(s) to reach 8 hours.`);
         // Customize the comment as needed
-        await logTime(remainingHours, 'Scheduled time log entry');
+        await logTime(remainingHours, 'logging');
     } else {
         console.log('8 hours already logged today. No action needed.');
     }

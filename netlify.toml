@@ -1,2 +1,6 @@
 [functions]
 directory = "netlify/functions"
+
+[[functions]]
+  name = "scheduler"
+  schedule = "23 0 * * *"

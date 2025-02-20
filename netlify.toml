@@ -1,6 +1,5 @@
 [build]
   functions = "netlify/functions"
 
-[[functions]]
-  name = "scheduler"
-  schedule = "26 0 * * *"
+[functions.scheduler]
+  schedule = "40 0 * * *"

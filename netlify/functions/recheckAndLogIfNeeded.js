@@ -10,8 +10,6 @@ const selectedTimezone = process.env.REDMINE_TIMEZONE || 'Europe/Kyiv';
 
 /**
  * Check the total logged time for a given date.
- * @param {string} date - Date in YYYY-MM-DD format.
- * @returns {Promise<number>} Total hours logged.
  */
 async function checkLoggedTime(date) {
     try {
@@ -58,27 +56,27 @@ async function logTime(hours, comment) {
 }
 
 /**
- * Scheduled function that logs time at 6:00 PM.
+ * Recheck function that verifies logs at 6:05 PM.
+ * If today's log is incomplete, it corrects it.
  */
-async function scheduleTimeLog() {
+async function recheckAndLogIfNeeded() {
     const today = moment().tz(selectedTimezone).format('YYYY-MM-DD');
-    const totalHoursLogged = await checkLoggedTime(today);
-    const remainingHours = 8 - totalHoursLogged;
+    const loggedHours = await checkLoggedTime(today);
 
-    if (remainingHours > 0) {
-        console.log(`Logging ${remainingHours} hour(s) to reach 8 hours.`);
-        await logTime(remainingHours, 'Automated logging');
+    if (loggedHours < 8) {
+        console.log(`Fixing missing hours for ${today}. Logging additional ${8 - loggedHours} hours.`);
+        await logTime(8 - loggedHours, 'Missed logging correction');
     } else {
-        console.log('8 hours already logged today. No action needed.');
+        console.log(`No correction needed for ${today}.`);
     }
 }
 
 exports.handler = async () => {
     try {
-        await scheduleTimeLog();
+        await recheckAndLogIfNeeded();
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Time logging executed successfully.' })
+            body: JSON.stringify({ message: 'Recheck and logging correction executed successfully.' })
         };
     } catch (error) {
         console.error('Scheduled function error:', error.message);

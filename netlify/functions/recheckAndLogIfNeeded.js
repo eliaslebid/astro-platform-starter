@@ -66,8 +66,10 @@ async function recheckAndLogIfNeeded() {
     if (loggedHours < 8) {
         console.log(`Fixing missing hours for ${today}. Logging additional ${8 - loggedHours} hours.`);
         await logTime(8 - loggedHours, 'Missed logging correction');
+        await sendTelegramNotification(`Recheck: Logged additional ${8 - loggedHours} hour(s) for ${today}.`);
     } else {
         console.log(`No correction needed for ${today}.`);
+        await sendTelegramNotification(`Recheck: No correction needed for ${today}. Total hours: ${loggedHours}.`);
     }
 }
 

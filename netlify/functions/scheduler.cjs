@@ -57,9 +57,7 @@ async function logTime(hours, comment) {
     }
 }
 
-/**
- * Scheduled function that logs time at 6:00 PM.
- */
+// Inside your scheduleTimeLog function:
 async function scheduleTimeLog() {
     const today = moment().tz(selectedTimezone).format('YYYY-MM-DD');
     const totalHoursLogged = await checkLoggedTime(today);
@@ -68,8 +66,10 @@ async function scheduleTimeLog() {
     if (remainingHours > 0) {
         console.log(`Logging ${remainingHours} hour(s) to reach 8 hours.`);
         await logTime(remainingHours, 'Automated logging');
+        await sendTelegramNotification(`Scheduled logging: Logged ${remainingHours} hour(s) for ${today}.`);
     } else {
         console.log('8 hours already logged today. No action needed.');
+        await sendTelegramNotification(`Scheduled logging: 8 hours already logged for ${today}.`);
     }
 }
 

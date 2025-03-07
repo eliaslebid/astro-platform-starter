@@ -29,7 +29,7 @@ async function sendTelegramMessage(chatId, text) {
         await axios.post(url, {
             chat_id: chatId,
             text: text
-        });
+        })
         console.log('Telegram notification sent:', text);
     } catch (error) {
         console.error('Error sending Telegram message:', error.message);

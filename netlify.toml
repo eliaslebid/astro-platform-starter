@@ -7,4 +7,4 @@
 
 # Temporary test: Re-check at 10:45 PM (22:45 Kyiv Time)
 [functions.recheckAndLogIfNeeded]
-  schedule = "45 22 * * 1-5"
+  schedule = "47 22 * * 1-5"

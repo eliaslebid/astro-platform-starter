@@ -25,11 +25,12 @@ async function checkLoggedTime(date) {
 // Function to send a message via Telegram
 async function sendTelegramMessage(chatId, text) {
     const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+    console.log('Using Telegram Bot Token:', process.env.TELEGRAM_BOT_TOKEN);
     try {
         await axios.post(url, {
             chat_id: chatId,
             text: text
-        })
+        });
         console.log('Telegram notification sent:', text);
     } catch (error) {
         console.error('Error sending Telegram message:', error.message);

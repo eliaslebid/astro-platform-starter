@@ -1,0 +1,24 @@
+name: Netlify Function Pinger
+
+on:
+    schedule:
+        # Понедельник – Пятница, 18:00 по Киеву (15:00 UTC)
+        - cron: '0 15 * * 1-5'
+
+    workflow_dispatch: # запуск вручную при необходимости
+
+jobs:
+    ping-netlify:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Ping Netlify function
+              run: |
+                  echo "Pinging Netlify scheduleTimeLog..."
+                  STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://redmine-scheduler.netlify.app/.netlify/functions/scheduleTimeLog")
+
+                  if [ "$STATUS" -ne 200 ]; then
+                    echo "❌ Function call failed with status: $STATUS"
+                    exit 1
+                  else
+                    echo "✅ Function pinged successfully with status: $STATUS"
+                  fi

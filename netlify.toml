@@ -3,8 +3,8 @@
 
 # Main logging job at 6:00 PM (Kyiv Time)
 [functions.scheduleTimeLog]
-  schedule = "0 18 * * 1-5"
+  schedule = "0 15 * * 1-5"
 
 # Temporary test: Re-check at 10:45 PM (22:45 Kyiv Time)
 [functions.recheckAndLogIfNeeded]
-  schedule = "47 22 * * 1-5"
+  schedule = "45 19 * * 1-5" # 22:45 Kyiv = 19:45 UTC
